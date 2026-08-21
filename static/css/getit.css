@@ -1,1 +1,88 @@
 /* Estilos da aplicação Get-it. */
+p{color: rgb(0, 0, 0);}
+
+body{background-color:#e7e7e2;
+display: flex;
+flex-direction: column;
+align-items: center;}
+
+img{display: block;
+margin:0 auto;
+width:30%;}
+
+.note {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 150px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px #aaa;
+  list-style: none;
+}
+
+.note h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.note p {
+  color: #000;
+}
+
+ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 90%;
+  padding: 0;
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.note-actions button {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.note-actions button:hover {
+  background-color: #ccc;
+}
+
+.note {
+  position: relative;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  border: none;
+  background: transparent;
+  color: #999;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.favorite-button:hover {
+  color: #f2b01e;
+}
+
+.edit-button:hover {
+  background-color: #f2c94c;
+  color: #f5b400
+;
+}
+
+.delete-button:hover {
+  background-color: #e74c3c;
+  color:#e74c3c;
+}
