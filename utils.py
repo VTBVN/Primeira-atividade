@@ -1,18 +1,29 @@
-import json
+import sqlite3
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
-def load_data(filename):
-    """Carrega um arquivo JSON localizado em static/data."""
-    with open(f"static/data/{filename}", encoding="utf-8") as file:
-        return json.load(file)
+def get_connection():
+    connection = sqlite3.connect(BASE_DIR / 'banco.db')
+    connection.row_factory = sqlite3.Row
+    return connection
 
 
-def save_data(filename, data):
-    """Salva dados em um arquivo JSON localizado em static/data."""
-    with open(f"static/data/{filename}", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=2)
+def load_notes():
+    connection = get_connection()
+
+    notes = connection.execute("""
+        SELECT id, title, content
+        FROM note
+        ORDER BY id
+    """).fetchall()
+
+    connection.close()
+
+    return notes
 
 
 def load_template(filename):
-    with open(f"static/templates/{filename}", encoding="utf-8") as file:
+    with open(BASE_DIR / "static" / "templates" / filename, encoding="utf-8") as file:
         return file.read()
