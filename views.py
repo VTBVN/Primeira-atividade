@@ -16,10 +16,10 @@ def index():
 
     notes_li = [
         note_template.format(
-            id=note['id'],
-            title=escape(note['title']),
-            details=escape(note['content']),
-            favorite_symbol='★' if note['favorite'] else '☆',
+            id=note.id,
+            title=escape(note.title),
+            details=escape(note.content),
+            favorite_symbol='★' if note.favorite else '☆',
         )
         for note in load_notes()
     ]
@@ -44,9 +44,9 @@ def edit_page(note_id):
         return index()
 
     return load_template('edit.html').format(
-        id=note['id'],
-        title=escape(note['title'], quote=True),
-        details=escape(note['content'], quote=True),
+        id=note.id,
+        title=escape(note.title, quote=True),
+        details=escape(note.content, quote=True),
     )
 
 

@@ -5,6 +5,23 @@ BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / 'banco.db'
 
 
+class Note:
+    def __init__(self, id, title, content, favorite=0):
+        self.id = id
+        self.title = title
+        self.content = content
+        self.favorite = favorite
+
+
+def row_to_note(row):
+    return Note(
+        id=row['id'],
+        title=row['title'],
+        content=row['content'],
+        favorite=row['favorite'],
+    )
+
+
 def initialize_database():
     connection = sqlite3.connect(DB_PATH)
 
@@ -41,7 +58,7 @@ def get_connection():
 def load_notes():
     connection = get_connection()
 
-    notes = connection.execute("""
+    rows = connection.execute("""
         SELECT id, title, content, favorite
         FROM note
         ORDER BY favorite DESC, id
@@ -49,13 +66,13 @@ def load_notes():
 
     connection.close()
 
-    return notes
+    return [row_to_note(row) for row in rows]
 
 
 def load_note(note_id):
     connection = get_connection()
 
-    note = connection.execute(
+    row = connection.execute(
         """
         SELECT id, title, content, favorite
         FROM note
@@ -66,7 +83,10 @@ def load_note(note_id):
 
     connection.close()
 
-    return note
+    if row is None:
+        return None
+
+    return row_to_note(row)
 
 
 def create_note(title, content):
