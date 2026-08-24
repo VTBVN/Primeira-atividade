@@ -29,6 +29,7 @@ def delete_note(note_id):
 
 
 @app.route('/update/<int:note_id>')
+@app.route('/edit/<int:note_id>')
 def edit_note(note_id):
     return render_template_string(views.edit_page(note_id))
 
