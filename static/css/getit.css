@@ -44,7 +44,9 @@ ul {
   margin-top: 20px;
 }
 
-.note-actions button {
+.note-actions a {
+  color: #000;
+  text-decoration: none;
   border: none;
   padding: 8px 12px;
   border-radius: 6px;
@@ -52,7 +54,7 @@ ul {
   background-color: #eee;
 }
 
-.note-actions button:hover {
+.note-actions a:hover {
   background-color: #ccc;
 }
 
@@ -70,6 +72,7 @@ ul {
   color: #999;
   font-size: 28px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .favorite-button:hover {
