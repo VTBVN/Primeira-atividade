@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / 'banco.db'
-LEGACY_NOTES_FILE = BASE_DIR / 'static' / 'data' / 'notes.json'
+LEGACY_NOTES_FILE = None
 
 
 class Note:
@@ -21,8 +21,7 @@ def configure_database(database=None, legacy_notes_file=None):
     if database is not None:
         DB_PATH = Path(database)
 
-    if legacy_notes_file is not None:
-        LEGACY_NOTES_FILE = Path(legacy_notes_file)
+    LEGACY_NOTES_FILE = Path(legacy_notes_file) if legacy_notes_file is not None else None
 
 
 def row_to_note(row):

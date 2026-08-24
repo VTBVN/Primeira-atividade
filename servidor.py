@@ -9,7 +9,7 @@ def create_app(test_config=None):
 
     app.config.from_mapping(
         DATABASE='banco.db',
-        LEGACY_NOTES_FILE='static/data/notes.json',
+        LEGACY_NOTES_FILE=None,
     )
 
     if test_config is not None:
