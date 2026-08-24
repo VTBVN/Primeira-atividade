@@ -2,10 +2,38 @@ import sqlite3
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / 'banco.db'
+
+
+def initialize_database():
+    connection = sqlite3.connect(DB_PATH)
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS note (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL
+        )
+    """)
+
+    columns = [
+        row[1]
+        for row in connection.execute("PRAGMA table_info(note)").fetchall()
+    ]
+
+    if 'favorite' not in columns:
+        connection.execute(
+            "ALTER TABLE note ADD COLUMN favorite INTEGER NOT NULL DEFAULT 0"
+        )
+
+    connection.commit()
+    connection.close()
 
 
 def get_connection():
-    connection = sqlite3.connect(BASE_DIR / 'banco.db')
+    initialize_database()
+
+    connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     return connection
 
@@ -14,14 +42,83 @@ def load_notes():
     connection = get_connection()
 
     notes = connection.execute("""
-        SELECT id, title, content
+        SELECT id, title, content, favorite
         FROM note
-        ORDER BY id
+        ORDER BY favorite DESC, id
     """).fetchall()
 
     connection.close()
 
     return notes
+
+
+def load_note(note_id):
+    connection = get_connection()
+
+    note = connection.execute(
+        """
+        SELECT id, title, content, favorite
+        FROM note
+        WHERE id = ?
+        """,
+        (note_id,),
+    ).fetchone()
+
+    connection.close()
+
+    return note
+
+
+def create_note(title, content):
+    connection = get_connection()
+
+    connection.execute(
+        'INSERT INTO note (title, content) VALUES (?, ?)',
+        (title, content),
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def update_note(note_id, title, content):
+    connection = get_connection()
+
+    connection.execute(
+        'UPDATE note SET title = ?, content = ? WHERE id = ?',
+        (title, content, note_id),
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def delete_note(note_id):
+    connection = get_connection()
+
+    connection.execute(
+        'DELETE FROM note WHERE id = ?',
+        (note_id,),
+    )
+
+    connection.commit()
+    connection.close()
+
+
+def toggle_favorite(note_id):
+    connection = get_connection()
+
+    connection.execute(
+        """
+        UPDATE note
+        SET favorite = CASE favorite WHEN 1 THEN 0 ELSE 1 END
+        WHERE id = ?
+        """,
+        (note_id,),
+    )
+
+    connection.commit()
+    connection.close()
 
 
 def load_template(filename):

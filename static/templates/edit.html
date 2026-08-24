@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/getit.css">
+<meta charset="UTF-8">
+<title>Editar anotação</title>
+</head>
+<body>
+  <img src="{{{{ url_for('static', filename='img/logo-getit.png') }}}}">
+  <p>Editar anotação</p>
+
+  <form action="/update" method="POST">
+    <input type="hidden" name="id" value="{id}" />
+    <label for="titulo">Título</label>
+    <input id="titulo" type="text" name="titulo" value="{title}" required />
+    <label for="detalhes">Detalhes</label>
+    <input id="detalhes" name="detalhes" value="{details}" required />
+    <input type="submit" value="Salvar" />
+    <a href="/">Cancelar</a>
+  </form>
+</body>
+</html>
